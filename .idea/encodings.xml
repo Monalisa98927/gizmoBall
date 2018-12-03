@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/Absorber.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/Ball.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/BasicGizmo.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/Circle.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/Flipper.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/GameBoard.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/Gizmo.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/Square.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/Trapezium.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/Triangle.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/Wall.java" charset="GBK" />
+  </component>
+</project>
