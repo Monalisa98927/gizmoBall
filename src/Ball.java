@@ -9,18 +9,18 @@ import java.io.Serializable;
 
 public class Ball implements Serializable {
 
-	private double a = 0.2;
+	private double a = 0.02;
 	private double direction;
 	private double velocityLoss;
-	private double x = 20;
-	private double y = 20;
-	private double velocityX = 2;
+	private double x = 100;
+	private double y = 100;
+	private double velocityX = 1;
 	private double velocityY = 0;
 	protected double r = 20;
 	private Circle ballCircle;
 	private Vect velocity;
 	private GameController gameController;
-	private Color color = new Color(80, 76, 79);
+	private Color color = new Color(13, 11, 9);
 
 	public Ball(GameController gameController){
 		this.gameController = gameController;
@@ -99,44 +99,58 @@ public class Ball implements Serializable {
 		this.velocityY = velocityY;
 	}
 
-	public void isAbsorbed(){
+	public void isAbsorbed(){			//判断小球是否被吸收器吸收
 		this.setR(0);
 		this.gameController.setMode(false);
 		this.gameController.setGameOver(true);
 	}
 
-	public void startMoving(){
+	public void startMoving(){				//处理小球运动状态
 
 		x = x + velocityX ;
+
+		//小球和窗口左边界碰撞
 		if (x <= r) {
 			x = r;
 			velocityX = -velocityX + ( (velocityX > 0)? velocityLoss*velocityX : -velocityLoss*velocityX );
 		}
+
+		//和右边界碰撞
 		if (x >= gameController.getWidth() - r) {
 			x = gameController.getWidth() - r;
 			velocityX = -velocityX + ( (velocityX > 0)? velocityLoss*velocityX : -velocityLoss*velocityX );
 		}
+
+		//和圆碰撞
 		for (int i=0; i<gameController.getCircleCount(); i++){
 			if (gameController.getCircle(i).collide(this)){
 				double theta=Math.atan((this.y-gameController.getCircle(i).getY())/(this.x-gameController.getCircle(i).getX()));
 				velocityX = -velocityY*Math.sin(theta)*Math.cos(theta)-velocityX*Math.cos(theta)*Math.cos(theta)-velocityY*Math.cos(theta)*Math.sin(theta)+velocityX*Math.sin(theta)*Math.sin(theta);
 			}
 		}
+
+		//和正方形碰撞
 		for(int j=0; j<gameController.getSquareCount(); j++){
 			if(gameController.getSquare(j).xcollide(this)){
 				velocityX = -velocityX + ( (velocityX > 0)? velocityLoss*velocityX : -velocityLoss*velocityX );
 			}
 		}
+
+		//和三角形碰撞
 		for(int j=0; j<gameController.getTriangleCount(); j++){
 //			if(gameController.getTriangle(j).xcollide(this)||gameController.getTriangle(j).bevelcollide(this)){
 //				velocityX=-velocityY;
 //			}
 			gameController.getTriangle(j).handlecollide(this);
 		}
+
+		//和梯形碰撞
 		for(int j=0; j<gameController.getTrapeziumCount(); j++){
 			gameController.getTrapezium(j).handlecollide(this);
 
 		}
+
+		//和挡板碰撞
 		for(int j=0; j<gameController.getFlipperCount(); j++){
 			if(gameController.getFlipper(j).getLeftRotate())
 			{
@@ -153,6 +167,8 @@ public class Ball implements Serializable {
 			}
 
 		}
+
+		//和吸收器碰撞
 		for(int j=0; j<gameController.getAbsorberCount(); j++){
 			if(gameController.getAbsorber(j).xcollide(this)){
 				this.isAbsorbed();
@@ -209,7 +225,9 @@ public class Ball implements Serializable {
 			}
 		}
 
-		for(int j=0; j<gameController.getTrackCount(); j++){              //轨道内为真空环境，加速度为0
+
+		//进入轨道后的运动		//轨道内为真空环境，加速度为0
+		for(int j=0; j<gameController.getTrackCount(); j++){
 			if(this.x>=gameController.getTrack(j).getX()
 					&&this.x<=gameController.getTrack(j).getX()+gameController.getTrack(j).getWidth()
 					&&this.y>=gameController.getTrack(j).getY()
@@ -229,6 +247,8 @@ public class Ball implements Serializable {
 			if(gameController.getTrack(j).ycollide(this)){
 				velocityY = -velocityY + ( (velocityY > 0)? velocityLoss*velocityY : -velocityLoss*velocityY );
 			}
+
+			//从上入口进入轨道
 			if(gameController.getTrack(j).yEnterTrack(this)){
 				velocityX = 0;
 				velocityY = 4;
@@ -236,6 +256,8 @@ public class Ball implements Serializable {
 			if(gameController.getTrack(j).xcollide(this)){
 				velocityX = -velocityX + ( (velocityX > 0)? velocityLoss*velocityX : -velocityLoss*velocityX );
 			}
+
+			//从下入口进入轨道
 			if(gameController.getTrack(j).xEnterTrack(this)){
 				velocityY = 0;
 				velocityX = -4;

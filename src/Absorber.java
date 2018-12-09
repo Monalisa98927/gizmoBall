@@ -51,7 +51,7 @@ public class Absorber extends Gizmo implements Serializable {
 		this.y = y;
 	}
 
-	public boolean xcollide(Ball ball){
+	public boolean xcollide(Ball ball){				//水平方向发生碰撞
 
 		if(ball.getX()+ball.r>=this.x&&ball.getX()+ball.r<this.x+10&&ball.getY()>=this.y-ball.r&&ball.getY()<=this.y+height+ball.r){
 			ball.setX(this.x-ball.r);
@@ -65,7 +65,7 @@ public class Absorber extends Gizmo implements Serializable {
 		return false;
 	}
 
-	public boolean ycollide(Ball ball){
+	public boolean ycollide(Ball ball){				//竖直方向发生碰撞
 
 		if(ball.getY()+ball.r>=this.y&&ball.getY()+ball.r<=this.y+10&&ball.getX()>=this.x-ball.r&&ball.getX()<=this.x+width+ball.r){
 			ball.setY(this.y-ball.r);
@@ -79,7 +79,7 @@ public class Absorber extends Gizmo implements Serializable {
 		return false;
 	}
 
-	public void draw(Graphics2D g)
+	public void draw(Graphics2D g)		//画吸收器
 	{
 		Rectangle2D ab = new Rectangle2D.Double(x,y,width,height);
 		g.setColor(color);

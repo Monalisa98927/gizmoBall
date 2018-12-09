@@ -117,28 +117,25 @@ public class GameController extends JComponent implements Serializable {
         this.deletemode = deletemode;
     }
 
+    //开始游戏，以及判断游戏结束
     private void update() {
         Rectangle oldPos = ball.boundingBox();
-
-        ball.startMoving(); // make changes to the logical animation state
-
+        ball.startMoving();
         Rectangle repaintArea = oldPos.union(ball.boundingBox());
-
-        //repaint(repaintArea.x, repaintArea.y, repaintArea.width, repaintArea.height);
-
         requestFocus();
         repaint();
 
+        //一轮游戏结束后，重新生成一个小球，可以点击run重新开始游戏
         if(this.isGameOver()){
             JOptionPane.showMessageDialog(null,"Game Over!","Tip",JOptionPane.PLAIN_MESSAGE);
-
             this.setGameOver(false);
-
             ball=new Ball(this);
+            repaint();
         }
 
     }
 
+    //游戏模式：true表示正在游戏，false表示中止游戏
     public void setMode(boolean m) {
         if (mode == m) {
             return;
@@ -246,6 +243,7 @@ public class GameController extends JComponent implements Serializable {
         return trackCount;
     }
 
+    //判断gizmo组件是否需要旋转
     public void setRotateMode(boolean f) {
         if(rotateMode == f){
             return;
@@ -271,6 +269,7 @@ public class GameController extends JComponent implements Serializable {
         boolean markC = false;  //鼠标悬挂小球上方
         boolean markM = false;  //鼠标点击小球
 
+        @Override
         public void mousePressed(MouseEvent e) {           //判断鼠标是否点击
             //System.out.println("mousePressed");
             double pressX = e.getX();
@@ -352,6 +351,7 @@ public class GameController extends JComponent implements Serializable {
             }
         }
 
+        @Override
         public void mouseReleased(MouseEvent e){
             int releasex = e.getX();
             int releasey = e.getY();
@@ -472,6 +472,7 @@ public class GameController extends JComponent implements Serializable {
             }
         }
 
+        @Override                                      //鼠标点击拖动gizmo组件
         public void mouseDragged(MouseEvent e) {
 
             //System.out.println("mouseDragged");
@@ -545,6 +546,7 @@ public class GameController extends JComponent implements Serializable {
             }
         }
 
+        @Override
         public void keyReleased(KeyEvent e) {
             for(int i=0;i<flipperCount;i++) {
                 getFlipper(i).setLeftRotate(false);
@@ -556,6 +558,7 @@ public class GameController extends JComponent implements Serializable {
 
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             update();
         }

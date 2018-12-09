@@ -51,6 +51,8 @@ public class GameBoard extends JFrame implements Serializable{
 		setContentPane(contentPane);
 	}
 
+
+	//所有的上方按钮：保存、打开、开始游戏、停止、退出
 	protected void addButtons(JToolBar toolBar) {
 
 		final JButton save = new JButton("Save");;
@@ -153,6 +155,7 @@ public class GameBoard extends JFrame implements Serializable{
 
 	}
 
+	//添加gizmo组件的按钮：工具栏按钮
 	protected void addGizmos(JPanel jPanel) {
 
 		JButton circle = new JButton("Circle");
@@ -252,6 +255,7 @@ public class GameBoard extends JFrame implements Serializable{
 		);
 	}
 
+	//右边的操作按钮
 	protected void addOperationButtons(JPanel jPanel) {
 
 		JButton larger = new JButton("larger");
@@ -303,7 +307,6 @@ public class GameBoard extends JFrame implements Serializable{
 								.addContainerGap(149, Short.MAX_VALUE))
 		);
 	}
-
 
 	public static void main(String[] args){
 		GameBoard gameBoard = new GameBoard();

@@ -85,6 +85,7 @@ public class Trapezium extends BasicGizmo implements Serializable {
 		setLineSegments(lineSegments);
 		setTrapziumCircles(trapziumCircles);
 	}
+
 	public void setLineSegments(List<LineSegment> lineSegments) {
 		LineSegment line1=new LineSegment(x,y,x+a,y);
 		LineSegment line2=new LineSegment(x,y,x-a,y+a);
@@ -114,7 +115,6 @@ public class Trapezium extends BasicGizmo implements Serializable {
 		this.trapziumCircles = trapziumCircles;
 	}
 
-
 	public  void handlecollide(Ball ball)
 	{
 		for(int i=getLineSegments().size()-1;i>=getLineSegments().size()-4;i--)
@@ -135,7 +135,6 @@ public class Trapezium extends BasicGizmo implements Serializable {
 		}
 
 	}
-
 
 	public boolean collide(Ball ball){
 		double squX = (ball.getX() - this.x - this.a/2) * (ball.getX() - this.x - this.a/2);

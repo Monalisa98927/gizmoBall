@@ -78,7 +78,7 @@ public class Track extends BasicGizmo implements Serializable {
         return false;
     }
 
-    public boolean xEnterTrack(Ball ball){                             //判断小球进入下方入口
+    public boolean xEnterTrack(Ball ball){                   //判断小球进入下方入口
         if(ball.getX()-ball.r>=this.x+width+width-5
                 &&ball.getX()-ball.r<=this.x+width+width
                 &&ball.getY()>=this.y-ball.r+width
@@ -116,7 +116,7 @@ public class Track extends BasicGizmo implements Serializable {
         return false;
     }
 
-    public boolean inTrackGoRight(Ball ball){
+    public boolean inTrackGoRight(Ball ball){           //从下方出口出轨道
 
         if(ball.getX()-ball.r>=this.x+25
                 &&ball.getX()+ball.r<=this.x+width-25
@@ -134,7 +134,7 @@ public class Track extends BasicGizmo implements Serializable {
         return false;
     }
 
-    public boolean inTrackGoUp(Ball ball){
+    public boolean inTrackGoUp(Ball ball){              //从上方出口出轨道
 
         if(ball.getX()-ball.r>=this.x+20
                 &&ball.getX()+ball.r<=this.x+width-20

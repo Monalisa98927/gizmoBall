@@ -113,7 +113,6 @@ public class Triangle extends BasicGizmo implements Serializable {
 
 	}
 
-
 	public boolean xcollide(Ball ball){
 
 		if(ball.getX()+ball.r>=this.x&&ball.getX()+ball.r<=this.x+10&&ball.getY()>=this.y-this.width-ball.r&&ball.getY()<=this.y+ball.r) {
