@@ -94,10 +94,10 @@ public class Flipper extends Gizmo implements Serializable {
 	public void draw(Graphics2D g)
 	{
 		double a=Math.toRadians(theta);
-		System.out.println(theta+" "+Math.cos(a));
+		//System.out.println(theta+" "+Math.cos(a));
 		x2=x+length*(int)Math.cos(a);
 		y2=y+length*(int)Math.sin(a);
-		System.out.println(x2+" dadsa "+x);
+		//System.out.println(x2+" "+x);
 		Line2D filledLine=new Line2D.Float(x,y,x2,y2);
 		g.setColor(color);
 		g.setStroke(new BasicStroke(10,BasicStroke.CAP_ROUND,BasicStroke.JOIN_MITER));

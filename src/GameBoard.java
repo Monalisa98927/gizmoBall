@@ -14,16 +14,10 @@ public class GameBoard extends JFrame implements Serializable{
 	private int width;
 	private JPanel gamePanel = null;
 	private JPanel toolsPanel = null;
+	JScrollPane scrollPane = null;
 	private JFileChooser jFileChooser = new JFileChooser(".");
 	private JOptionPane jOptionPane = null;
-	private ArrayList<Gizmo> list = null;
-
 	protected GameController gameController;
-	public Ball m_Ball;
-	public Absorber m_Absorber;
-	public Wall m_Wall;
-	public Gizmo m_Gizmo;
-
 
 	public GameBoard(){
 		super("Gizmo Ball");
@@ -39,7 +33,7 @@ public class GameBoard extends JFrame implements Serializable{
 		toolsPanel = new JPanel();
 		addOperationButtons(toolsPanel);
 		gameController = new GameController();
-		JScrollPane scrollPane = new JScrollPane(gameController);
+		scrollPane = new JScrollPane(gameController);
 		JPanel contentPane = new JPanel();
 
 		contentPane.setLayout(new BorderLayout());
@@ -60,6 +54,7 @@ public class GameBoard extends JFrame implements Serializable{
 		final JButton run = new JButton("Run");
 		final JButton stop = new JButton("Stop");
 		final JButton quit = new JButton("Quit");
+		final JButton newGameBoard = new JButton("new board");
 
 		save.setToolTipText("Save the game state to a file");
 		save.addActionListener(new ActionListener() {
@@ -152,6 +147,20 @@ public class GameBoard extends JFrame implements Serializable{
 			}
 		});
 		toolBar.add(quit);
+
+		newGameBoard.setToolTipText("Create a new game board");
+		newGameBoard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				gameController.setMode(false);
+				gamePanel.setVisible(true);
+				toolsPanel.setVisible(true);
+				save.setEnabled(true);
+				open.setEnabled(true);
+				gameController.removeAllGizmos();
+				repaint();
+			}
+		});
+		toolBar.add(newGameBoard);
 
 	}
 

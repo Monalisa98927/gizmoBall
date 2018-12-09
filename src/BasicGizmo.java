@@ -2,6 +2,7 @@ import java.io.Serializable;
 
 public class BasicGizmo extends Gizmo implements Serializable {
 
+	protected int weight;
 
 	public BasicGizmo(){
 

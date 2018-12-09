@@ -10,6 +10,7 @@ public class Circle extends BasicGizmo implements Serializable {
 	private int r;
 	private GameController gameController;
 	private Color color = new Color(102, 255, 134);
+	private int weight = 100;
 
 	public int getR() {
 		return r;

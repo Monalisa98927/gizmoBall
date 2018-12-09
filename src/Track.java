@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public class Track extends BasicGizmo implements Serializable {
 
-    private Color color = new Color(13, 11, 9);
+    private Color color = new Color(177, 28, 249);
     private int width;
     private GameController gameController;
     private boolean xEnter = false;
@@ -32,7 +32,7 @@ public class Track extends BasicGizmo implements Serializable {
         filledPolygon.addPoint(x + width + width,y + width + width);
         filledPolygon.addPoint(x,y + width + width);
         g.setColor(color);
-        g.setStroke(new BasicStroke(10,BasicStroke.CAP_ROUND,BasicStroke.JOIN_MITER));
+        g.setStroke(new BasicStroke(5,BasicStroke.CAP_ROUND,BasicStroke.JOIN_MITER));
         //g.fillPolygon(filledPolygon);
         g.drawPolygon(filledPolygon);
     }

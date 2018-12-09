@@ -13,6 +13,7 @@ public class GameController extends JComponent implements Serializable {
 
     private AnimationEventListener eventListener;
     private Ball ball;
+    private Wall wall;
     private Vector circle = new Vector(20);
     private Vector square = new Vector(20);
     private Vector triangle = new Vector(20);
@@ -52,6 +53,7 @@ public class GameController extends JComponent implements Serializable {
     public GameController() {
 
         super();
+        wall = new Wall(this);
         ball = new Ball(this);
         eventListener = new AnimationEventListener();
 
@@ -76,6 +78,7 @@ public class GameController extends JComponent implements Serializable {
     @Override
     public void paintComponent(Graphics g) {
 
+        wall.draw((Graphics2D)g);
         ball.draw((Graphics2D)g);
         for(int i=0; i<circleCount; i++){
             ((Circle)circle.get(i)).draw((Graphics2D)g);
@@ -117,8 +120,26 @@ public class GameController extends JComponent implements Serializable {
         this.deletemode = deletemode;
     }
 
+    public void removeAllGizmos(){
+        circle.clear();
+        square.clear();
+        flipper.clear();
+        triangle.clear();
+        trapezium.clear();
+        absorber.clear();
+        track.clear();
+
+        circleCount = 0;
+        squareCount = 0;
+        triangleCount = 0;
+        trapeziumCount = 0;
+        flipperCount = 0;
+        absorberCount = 0;
+        trackCount = 0;
+    }
+
     //开始游戏，以及判断游戏结束
-    private void update() {
+    public void update() {
         Rectangle oldPos = ball.boundingBox();
         ball.startMoving();
         Rectangle repaintArea = oldPos.union(ball.boundingBox());
@@ -159,7 +180,7 @@ public class GameController extends JComponent implements Serializable {
 
     public void addCircle(){
         type="circle";
-        circle.add(circleCount,new Circle(this,100,500));
+        circle.add(circleCount,new Circle(this,100,400));
         circleCount++;
         System.out.println(circleCount);
     }
@@ -174,7 +195,7 @@ public class GameController extends JComponent implements Serializable {
 
     public void addSquare(){
         type="square";
-        square.add(squareCount,new Square(this,300,400));
+        square.add(squareCount,new Square(this,350,300));
         squareCount++;
     }
     public Square getSquare(int index){
@@ -198,7 +219,7 @@ public class GameController extends JComponent implements Serializable {
 
     public void addTrapezium(){
         type="trapezium";
-        trapezium.add(trapeziumCount,new Trapezium(this,700,500));
+        trapezium.add(trapeziumCount,new Trapezium(this,400,700));
         trapeziumCount++;
     }
     public Trapezium getTrapezium(int index){
@@ -222,7 +243,7 @@ public class GameController extends JComponent implements Serializable {
 
     public void addAbsorber(){
         type="absorber";
-        absorber.add(absorberCount,new Absorber(this,50,700));
+        absorber.add(absorberCount,new Absorber(this,600,700));
         absorberCount++;
     }
     public Absorber getAbsorber(int index){
@@ -233,7 +254,7 @@ public class GameController extends JComponent implements Serializable {
     }
     public void addTrack(){
         type="track";
-        track.add(trackCount,new Track(this,300,550));
+        track.add(trackCount,new Track(this,100,550));
         trackCount++;
     }
     public Track getTrack(int index){
@@ -366,10 +387,10 @@ public class GameController extends JComponent implements Serializable {
                 else {
                     if(largermode)
                     {
-                        getCircle(index).setR(getCircle(index).getR()+5);
+                        getCircle(index).setR(getCircle(index).getR()*2);
                         largermode=false;
                     }
-                    ((Circle) circle.get(index)).setPosition(releasex, releasey);
+                    ((Circle) circle.get(index)).setPosition((int)(releasex/50)*50, (int)(releasey/50)*50);
                 }
                 circlePress = false;
                 repaint();
@@ -384,10 +405,10 @@ public class GameController extends JComponent implements Serializable {
                 else {
                     if(largermode)
                     {
-                        getSquare(index).setWidth(getSquare(index).getWidth()+5);
+                        getSquare(index).setWidth(getSquare(index).getWidth()*2);
                         largermode=false;
                     }
-                    ((Square) square.get(index)).setPosition(releasex, releasey);
+                    ((Square) square.get(index)).setPosition((int)(releasex/50)*50, (int)(releasey/50)*50);
                 }
                 repaint();
                 squarePress = false;
@@ -404,14 +425,14 @@ public class GameController extends JComponent implements Serializable {
                 else {
                     if(largermode)
                     {
-                        getTriangle(index).setWidth(getTriangle(index).getWidth()+5);
+                        getTriangle(index).setWidth(getTriangle(index).getWidth()*2);
                         largermode=false;
                     }
                     if (rotateMode) {
                         getTriangle(index).setRotate(Math.PI / 2);
                         rotateMode=false;
                     }
-                    getTriangle(index).setPosition(releasex, releasey);
+                    getTriangle(index).setPosition((int)(releasex/50)*50, (int)(releasey/50)*50);
 
                 }
                 repaint();
@@ -428,10 +449,12 @@ public class GameController extends JComponent implements Serializable {
                 else {
                     if(largermode)
                     {
-                        getTrapezium(index).setA(getTrapezium(index).getA()+5);
+                        getTrapezium(index).setA(getTrapezium(index).getA()+50);
+                        getTrapezium(index).setB(getTrapezium(index).getB()+50);
+                        getTrapezium(index).setH(getTrapezium(index).getH()+50);
                         largermode=false;
                     }
-                    getTrapezium(index).setPosition(releasex, releasey);
+                    getTrapezium(index).setPosition((int)(releasex/50)*50, (int)(releasey/50)*50);
                 }
                 repaint();
                 trapeziumPress=false;
@@ -446,16 +469,16 @@ public class GameController extends JComponent implements Serializable {
                 else {
                     if(largermode)
                     {
-                        getFlipper(index).setLength(getFlipper(index).getLength()+5);
+                        getFlipper(index).setLength(getFlipper(index).getLength()*2);
                         largermode=false;
                     }
-                    getFlipper(index).setPosition(releasex, releasey);
+                    getFlipper(index).setPosition((int)(releasex/50)*50, (int)(releasey/50)*50);
                 }
                 repaint();
                 flipperPress=false;
             }
             if(absorberPress == true){
-                getAbsorber(index).setPosition(releasex,releasey);
+                getAbsorber(index).setPosition((int)(releasex/50)*50, (int)(releasey/50)*50);
                 repaint();
                 absorberPress = false;
             }
@@ -466,7 +489,7 @@ public class GameController extends JComponent implements Serializable {
                     deletemode=false;
                     trackCount--;
                 }
-
+                getTrack(index).setPosition((int)(releasex/50)*50, (int)(releasey/50)*50);
                 repaint();
                 trackPress=false;
             }
@@ -523,7 +546,7 @@ public class GameController extends JComponent implements Serializable {
         public void keyPressed(KeyEvent e) {
 
             int keynum = e.getKeyCode();
-            if (e.getKeyCode()==KeyEvent.VK_DOWN)
+            if (e.getKeyCode()==KeyEvent.VK_A)
             {
                 System.out.println(flipperCount);
                 for(int i=0;i<flipperCount;i++) {
@@ -533,7 +556,7 @@ public class GameController extends JComponent implements Serializable {
                     }
                 }
             }
-            if (e.getKeyCode()==KeyEvent.VK_UP)
+            if (e.getKeyCode()==KeyEvent.VK_D)
             {
                 System.out.println(flipperCount);
                 for(int i=0;i<flipperCount;i++) {
@@ -544,10 +567,35 @@ public class GameController extends JComponent implements Serializable {
                 }
 
             }
+            if (e.getKeyCode()==KeyEvent.VK_LEFT)
+            {
+                for(int i=0;i<flipperCount;i++) {
+                    getFlipper(i).setPosition(getFlipper(i).getX()-50,getFlipper(i).getY());
+                }
+            }
+            if (e.getKeyCode()==KeyEvent.VK_RIGHT)
+            {
+                for(int i=0;i<flipperCount;i++) {
+                    getFlipper(i).setPosition(getFlipper(i).getX()+50,getFlipper(i).getY());
+                }
+            }
+            if (e.getKeyCode()==KeyEvent.VK_UP)
+            {
+                for(int i=0;i<flipperCount;i++) {
+                    getFlipper(i).setPosition(getFlipper(i).getX(),getFlipper(i).getY()-50);
+                }
+            }
+            if (e.getKeyCode()==KeyEvent.VK_DOWN)
+            {
+                for(int i=0;i<flipperCount;i++) {
+                    getFlipper(i).setPosition(getFlipper(i).getX(),getFlipper(i).getY()+50);
+                }
+            }
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
+
             for(int i=0;i<flipperCount;i++) {
                 getFlipper(i).setLeftRotate(false);
                 getFlipper(i).setRightRotate(false);

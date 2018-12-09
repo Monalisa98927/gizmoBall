@@ -77,7 +77,7 @@ public class Trapezium extends BasicGizmo implements Serializable {
 		Polygon filledPolygon=new Polygon();
 		filledPolygon.addPoint(x,y);
 		filledPolygon.addPoint(x + a,y);
-		filledPolygon.addPoint(x + b, y + h);
+		filledPolygon.addPoint(x +b, y + h);
 		filledPolygon.addPoint(x - a,y + h);
 		g.setColor(color);
 		g.fillPolygon(filledPolygon);

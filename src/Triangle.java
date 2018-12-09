@@ -22,6 +22,7 @@ public class Triangle extends BasicGizmo implements Serializable {
 	private List<Circle> triangleCircles=new ArrayList<Circle>();
 	private Vect newVelocity;
 	private double theta;
+	private int weight = 100;
 
 	public int getWidth() {
 		return width;

@@ -7,6 +7,7 @@ public class Gizmo implements Serializable {
 	protected String type;
 	protected int x;
 	protected int y;
+	protected int weight;
 
 	public Gizmo(){
 

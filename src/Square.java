@@ -8,6 +8,7 @@ public class Square extends BasicGizmo implements Serializable {
 	private Color color = new Color(255, 123, 156);
 	private int width;
 	private GameController gameController;
+	private int weight = 100;
 
 	public int getWidth() {
 		return width;

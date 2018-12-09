@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Absorber extends Gizmo implements Serializable {
 
-	private Color color = new Color(19, 56, 255);
+	private Color color = new Color(70, 75, 255);
 	private int height;
 	private boolean isHit;
 	private int width;
