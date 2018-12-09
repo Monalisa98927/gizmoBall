@@ -1,18 +1,21 @@
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 
-public class Absorber extends Gizmo  {
+public class Absorber extends Gizmo implements Serializable {
 
+	private Color color = new Color(19, 56, 255);
 	private int height;
 	private boolean isHit;
 	private int width;
-	private int x;
-	private int y;
+	private GameController gameController;
 
-
-	public Absorber(int x,int y,int width,int height){
+	public Absorber(GameController gameController,int x,int y){
+		this.gameController = gameController;
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.width=200;
+		this.height=50;
 	}
 
 	public int getHeight() {
@@ -43,12 +46,45 @@ public class Absorber extends Gizmo  {
 		return y;
 	}
 
-	public boolean collide(Ball ball){
+	public void setPosition(int x, int y){
+		this.x = x;
+		this.y = y;
+	}
+
+	public boolean xcollide(Ball ball){
+
+		if(ball.getX()+ball.r>=this.x&&ball.getX()+ball.r<this.x+10&&ball.getY()>=this.y-ball.r&&ball.getY()<=this.y+height+ball.r){
+			ball.setX(this.x-ball.r);
+			return true;
+		}
+		if(ball.getX()-ball.r>=this.x+height-10&&ball.getX()-ball.r<=this.x+height&&ball.getY()>=this.y-ball.r&&ball.getY()<=this.y+height+ball.r){
+			ball.setX(this.x+width+ball.r);
+			return true;
+		}
+
 		return false;
 	}
 
-	public void setPosition(int x, int y){
+	public boolean ycollide(Ball ball){
 
+		if(ball.getY()+ball.r>=this.y&&ball.getY()+ball.r<=this.y+10&&ball.getX()>=this.x-ball.r&&ball.getX()<=this.x+width+ball.r){
+			ball.setY(this.y-ball.r);
+			return true;
+		}
+		if(ball.getY()-ball.r>=this.y+width-10&&ball.getY()-ball.r<=this.y+width&&ball.getX()>=this.x-ball.r&&ball.getX()<=this.x+width+ball.r)
+		{
+			ball.setY(this.y+this.width+ball.r);
+			return true;
+		}
+		return false;
 	}
+
+	public void draw(Graphics2D g)
+	{
+		Rectangle2D ab = new Rectangle2D.Double(x,y,width,height);
+		g.setColor(color);
+		g.fill(ab);
+	}
+
 }
 

@@ -1,6 +1,7 @@
 import java.awt.dnd.DropTargetListener;
+import java.io.Serializable;
 
-public class Gizmo {
+public class Gizmo implements Serializable {
 
 	protected boolean isHit;
 	protected String type;
@@ -40,7 +41,8 @@ public class Gizmo {
 	}
 
 	public void setPosition(int x, int y){
-
+		this.x=x;
+		this.y=y;
 	}
 
 }

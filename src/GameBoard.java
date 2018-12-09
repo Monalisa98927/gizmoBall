@@ -4,9 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
+import java.io.*;
+import java.util.ArrayList;
 
-public class GameBoard extends JFrame {
+public class GameBoard extends JFrame implements Serializable{
 
 	private boolean grid[][];
 	private int height;
@@ -14,12 +15,15 @@ public class GameBoard extends JFrame {
 	private JPanel gamePanel = null;
 	private JPanel toolsPanel = null;
 	private JFileChooser jFileChooser = new JFileChooser(".");
+	private JOptionPane jOptionPane = null;
+	private ArrayList<Gizmo> list = null;
 
 	protected GameController gameController;
 	public Ball m_Ball;
 	public Absorber m_Absorber;
 	public Wall m_Wall;
 	public Gizmo m_Gizmo;
+
 
 	public GameBoard(){
 		super("Gizmo Ball");
@@ -37,6 +41,7 @@ public class GameBoard extends JFrame {
 		gameController = new GameController();
 		JScrollPane scrollPane = new JScrollPane(gameController);
 		JPanel contentPane = new JPanel();
+
 		contentPane.setLayout(new BorderLayout());
 		contentPane.setPreferredSize(new Dimension(1000, 800));
 		contentPane.add(toolBar, BorderLayout.NORTH);
@@ -61,9 +66,23 @@ public class GameBoard extends JFrame {
 				int returnVal = jFileChooser.showSaveDialog(GameBoard.this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = jFileChooser.getSelectedFile();
-					System.out.println("???????: " + file.getName());
+					try {
+						//写入文件操作
+						FileOutputStream fos = new FileOutputStream(file);
+						ObjectOutputStream oos = new ObjectOutputStream(fos);
+						oos.writeObject(gameController.getCircle(0));
+						//JOptionPane.showMessageDialog(null,"save successfully");
+						oos.close();
+						fos.close();
+
+					} catch (Exception ex) {
+						System.err.println("catch Exception");
+						ex.printStackTrace();
+					}
+
+					System.out.println("保存文件: " + file.getName());
 				} else {
-					System.out.println("???????" );
+					System.out.println("取消保存" );
 				}
 			}
 		});
@@ -74,12 +93,29 @@ public class GameBoard extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Load pressed");
 				int returnVal = jFileChooser.showOpenDialog(GameBoard.this);
-
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = jFileChooser.getSelectedFile();
-					System.out.println("?????: " + file.getName());
+					try {
+						FileInputStream fos = new FileInputStream(file);
+						ObjectInputStream ois = new ObjectInputStream(fos);
+						ArrayList<Gizmo> list =(ArrayList<Gizmo>)ois.readObject();
+//						for (int i = 0; i <list.size(); i++) {
+//							Gizmo gizmo=(Gizmo) list.get(i);
+//							this.list.add(gizmo);
+//							this.panelcenter.repaint();
+//						}
+
+						ois.close();
+						//读取文件操作
+						fos.close();
+
+					} catch (Exception ex) {
+						System.err.println("Exception");
+						ex.printStackTrace();
+					}
+					System.out.println("打开文件: " + file.getName());
 				} else {
-					System.out.println("?????");
+					System.out.println("取消打开");
 				}
 			}
 		});
@@ -89,8 +125,6 @@ public class GameBoard extends JFrame {
 		run.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				gameController.setMode(true);
-				//gamePanel.setVisible(false);
-				//toolsPanel.setVisible(false);
 				save.setEnabled(false);
 				open.setEnabled(false);
 			}
@@ -134,8 +168,8 @@ public class GameBoard extends JFrame {
 		square.setToolTipText("Add square");
 		square.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gameController.addSquare();//????????????????
-				gameController.repaint();//??????????
+				gameController.addSquare();
+				gameController.repaint();
 			}
 		});
 
@@ -166,6 +200,24 @@ public class GameBoard extends JFrame {
 			}
 		});
 
+		JButton absorber = new JButton("Absorber");
+		absorber.setToolTipText("Add absorber");
+		absorber.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				gameController.addAbsorber();
+				gameController.repaint();
+			}
+		});
+
+		JButton track = new JButton("Track");
+		track.setToolTipText("Add track");
+		track.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				gameController.addTrack();
+				gameController.repaint();
+			}
+		});
+
 		GroupLayout jPanelLayout = new GroupLayout(jPanel);
 		jPanel.setLayout(jPanelLayout);
 		jPanelLayout.setHorizontalGroup(
@@ -175,6 +227,8 @@ public class GameBoard extends JFrame {
 						.addComponent(triangle)
 						.addComponent(trapezium)
 						.addComponent(flipper)
+						.addComponent(absorber)
+						.addComponent(track)
 		);
 		jPanelLayout.setVerticalGroup(
 				jPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -190,20 +244,23 @@ public class GameBoard extends JFrame {
 								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(flipper)
 								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(absorber)
+								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(track)
+								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 								.addContainerGap(149, Short.MAX_VALUE))
 		);
 	}
 
 	protected void addOperationButtons(JPanel jPanel) {
 
-		JButton move = new JButton("Move");
-		move.setToolTipText("Move gizmo");
-		move.addActionListener(new ActionListener() {
+		JButton larger = new JButton("larger");
+		larger.setToolTipText("Make Gizmo Larger");
+		larger.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				gameController.setLargerMode(true);
 			}
 		});
-
 
 		JButton rotate = new JButton("Rotate");
 		rotate.setToolTipText("Rotate gizmo");
@@ -217,7 +274,7 @@ public class GameBoard extends JFrame {
 		delete.setToolTipText("Delete gizmo");
 		delete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				gameController.setDeleteMode(true);
 			}
 		});
 
@@ -229,7 +286,7 @@ public class GameBoard extends JFrame {
 		jPanel.setLayout(jPanelLayout);
 		jPanelLayout.setHorizontalGroup(
 				jPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-						.addComponent(move)
+						.addComponent(larger)
 						.addComponent(rotate)
 						.addComponent(delete)
 		);
@@ -237,7 +294,7 @@ public class GameBoard extends JFrame {
 				jPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addGroup(jPanelLayout.createSequentialGroup()
 								.addContainerGap()
-								.addComponent(move)
+								.addComponent(larger)
 								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(rotate)
 								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -246,6 +303,7 @@ public class GameBoard extends JFrame {
 								.addContainerGap(149, Short.MAX_VALUE))
 		);
 	}
+
 
 	public static void main(String[] args){
 		GameBoard gameBoard = new GameBoard();

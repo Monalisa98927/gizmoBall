@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org-jdesktop-layout" level="project" />
     <orderEntry type="library" name="org-jdesktop-layout1" level="project" />
+    <orderEntry type="library" name="gizmo" level="project" />
   </component>
 </module>

@@ -1,8 +1,7 @@
+import java.io.Serializable;
 
-public class BasicGizmo extends Gizmo {
+public class BasicGizmo extends Gizmo implements Serializable {
 
-	protected int x;
-	protected int y;
 
 	public BasicGizmo(){
 
